@@ -22,6 +22,7 @@ public class RedisCoreImpl implements RedisCore
     /**
      *    客户端可能使用hash路由，更换为跳表更好的避免hash冲突
      */
+    //用来存key-value
     private final ConcurrentNavigableMap<BytesWrapper, RedisData> map         = new ConcurrentSkipListMap<BytesWrapper, RedisData>();
 //    private final ConcurrentHashMap<BytesWrapper, RedisData> map         = new ConcurrentHashMap<BytesWrapper, RedisData>();
 
@@ -41,18 +42,20 @@ public class RedisCoreImpl implements RedisCore
         clientNames.put(channelContext, connectionName);
     }
 
+    //判断是否存在
     @Override
     public boolean exist(BytesWrapper key)
     {
         return map.containsKey(key);
     }
-
+    //存数据
     @Override
     public void put(BytesWrapper key, RedisData redisData)
     {
         map.put(key, redisData);
     }
 
+    //取数据
     @Override
     public RedisData get(BytesWrapper key)
     {

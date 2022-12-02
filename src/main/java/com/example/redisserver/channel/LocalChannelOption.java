@@ -4,7 +4,10 @@ package com.example.redisserver.channel;
 import io.netty.channel.Channel;
 import io.netty.channel.EventLoopGroup;
 
-
+/**
+ * 建立TCP连接 对连接传输数据进行处理
+ * @param <C>
+ */
 public interface LocalChannelOption< C extends Channel>  {
     /**
      * @return 返回获取tcp线程

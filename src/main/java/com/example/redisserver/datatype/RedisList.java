@@ -37,7 +37,7 @@ public class RedisList implements RedisData
     {
         return deque.size();
     }
-
+    //从左加入数据
     public void lpush(List<BytesWrapper> values)
     {
         for (BytesWrapper value : values)
@@ -45,7 +45,7 @@ public class RedisList implements RedisData
             deque.addFirst(value);
         }
     }
-
+    //从右加入数据
     public void rpush(List<BytesWrapper> values)
     {
         for (BytesWrapper value : values)
@@ -54,8 +54,10 @@ public class RedisList implements RedisData
         }
     }
 
+    //返回指定区间内的数据
     public List<BytesWrapper> lrang(int start, int end)
     {
+        //skip跳过start个数据
         return deque.stream().skip(start).limit(end - start >= 0 ? end - start + 1 : 0).collect(Collectors.toList());
     }
 

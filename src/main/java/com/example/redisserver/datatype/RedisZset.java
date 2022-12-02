@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 public class RedisZset implements RedisData
 {
     private long                   timeout = -1;
+    //用treeMap来存储 将score值小的放在前面
     private TreeMap<ZsetKey, Long> map     = new TreeMap<>(new Comparator<ZsetKey>()
     {
         @Override
@@ -36,6 +37,7 @@ public class RedisZset implements RedisData
         this.timeout = timeout;
     }
 
+    //添加ZsetKey列表，返回添加的个数
     public int add(List<ZsetKey> keys)
     {
         return (int) keys.stream().peek(key -> {
@@ -58,6 +60,7 @@ public class RedisZset implements RedisData
         return (int) members.stream().filter(member ->map.remove(new ZsetKey(member,0))!=null).count();
     }
 
+    //封装每个member和对应的score值
     public static class ZsetKey
     {
         BytesWrapper key;
