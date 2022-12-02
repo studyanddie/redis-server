@@ -1,0 +1,18 @@
+2022-12-06 18:29:38 CommandHandler.java ERROR  ExceptionCaught：
+java.io.IOException: 远程主机强迫关闭了一个现有的连接。
+	at sun.nio.ch.SocketDispatcher.read0(Native Method)
+	at sun.nio.ch.SocketDispatcher.read(SocketDispatcher.java:43)
+	at sun.nio.ch.IOUtil.readIntoNativeBuffer(IOUtil.java:223)
+	at sun.nio.ch.IOUtil.read(IOUtil.java:192)
+	at sun.nio.ch.SocketChannelImpl.read(SocketChannelImpl.java:378)
+	at io.netty.buffer.PooledByteBuf.setBytes(PooledByteBuf.java:253)
+	at io.netty.buffer.AbstractByteBuf.writeBytes(AbstractByteBuf.java:1132)
+	at com.example.redisserver.netty.channel.socket.NioSingleSocketChannel.doReadBytes(NioSingleSocketChannel.java:325)
+	at com.example.redisserver.netty.channel.nio.AbstractSingleNioByteChannel$NioByteUnsafe.read(AbstractSingleNioByteChannel.java:130)
+	at com.example.redisserver.netty.channel.nio.NioSingleEventLoop.processSelectedKey(NioSingleEventLoop.java:700)
+	at com.example.redisserver.netty.channel.nio.NioSingleEventLoop.processSelectedKeysOptimized(NioSingleEventLoop.java:634)
+	at com.example.redisserver.netty.channel.nio.NioSingleEventLoop.processSelectedKeys(NioSingleEventLoop.java:557)
+	at com.example.redisserver.netty.channel.nio.NioSingleEventLoop.run(NioSingleEventLoop.java:469)
+	at io.netty.util.concurrent.SingleThreadEventExecutor$4.run(SingleThreadEventExecutor.java:986)
+	at io.netty.util.internal.ThreadExecutorMap$2.run(ThreadExecutorMap.java:74)
+	at java.lang.Thread.run(Thread.java:750)

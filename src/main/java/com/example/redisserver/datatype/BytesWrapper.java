@@ -6,7 +6,7 @@ import java.util.Arrays;
 
 /**
  * @author WesleyGo
- * key结构，为封装的string，重写了equals方法避免相同的key但是在jvm中指针不同
+ * key结构，是封装的string，重写了equals方法避免相同的key但是在jvm中指针不同
  */
 public class BytesWrapper implements Comparable<BytesWrapper>
 {
