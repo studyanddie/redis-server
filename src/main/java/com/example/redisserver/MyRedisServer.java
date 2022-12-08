@@ -65,8 +65,11 @@ public class MyRedisServer implements RedisServer
         }
     }
     public void start0() {
-
-        serverBootstrap.group(channelOption.boss(), channelOption.selectors())
+        //启动类 负责组装netty组件，启动服务器
+        serverBootstrap
+                //group组 boss用来处理可连接事件 selectors用来处理可读事件
+                .group(channelOption.boss(), channelOption.selectors())
+                //使用nio实现
                 .channel(channelOption.getChannelClass())
                 .handler(new LoggingHandler(LogLevel.INFO))
                 .option(ChannelOption.SO_BACKLOG, 1024)
@@ -77,9 +80,13 @@ public class MyRedisServer implements RedisServer
 //                .childOption(ChannelOption.SO_SNDBUF, 65535)
 //                .childOption(ChannelOption.SO_RCVBUF, 65535)
                 .localAddress(new InetSocketAddress(PropertiesUtil.getNodeAddress(), PropertiesUtil.getNodePort()))
-                .childHandler(new ChannelInitializer<SocketChannel>() {
+                //处理器 决定了读写执行哪些操作
+                .childHandler(
+                        //channel代表和客户端进行数据读写的通道 initiallizer 初始化，负责添加别的handler
+                        new ChannelInitializer<SocketChannel>() {
                     @Override
                     protected void initChannel(SocketChannel socketChannel) throws Exception {
+                        //添加具体handler
                         ChannelPipeline channelPipeline = socketChannel.pipeline();
                         channelPipeline.addLast(
                                 new ResponseEncoder(),

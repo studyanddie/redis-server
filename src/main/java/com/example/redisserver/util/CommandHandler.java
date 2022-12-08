@@ -46,9 +46,4 @@ public class CommandHandler extends SimpleChannelInboundHandler<Command> // Read
         super.channelUnregistered(ctx);
         ctx.close();
     }
-//    @Override
-//    public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {
-//        super.channelUnregistered(ctx);
-//        ctx.flush();
-//    }
 }
