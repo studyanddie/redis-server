@@ -31,8 +31,11 @@ public class CommandFactory
 
     public static Command from(RespArray arrays)
     {
+        //zadd key score1 value1 score2 value2
         Resp[]            array       = arrays.getArray();
+        //resp数组第一个即为指令的名称 zadd
         String            commandName = ((BulkString) array[0]).getContent().toUtf8String().toLowerCase();
+        //supplier 存储指令类型的类
         Supplier<Command> supplier    = map.get(commandName);
         if (supplier == null)
         {
@@ -43,9 +46,11 @@ public class CommandFactory
         else
         {
             try
-            {
+            {   //获取指令
                 Command command = supplier.get();
+                //设置指令内容
                 command.setContent(array);
+                //返回指令内容
                 return command;
             }
             catch (Throwable e)

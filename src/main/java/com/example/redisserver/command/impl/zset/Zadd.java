@@ -42,6 +42,7 @@ public class Zadd implements WriteCommand
     @Override
     public void handle(ChannelHandlerContext ctx, RedisCore redisCore)
     {
+        //获取键值对的键key
         RedisData redisData = redisCore.get(key);
         if (redisData == null)
         {

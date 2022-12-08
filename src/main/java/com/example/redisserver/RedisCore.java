@@ -8,6 +8,10 @@ import io.netty.channel.Channel;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * @author WesleyGo
+ * 底层主结构 用来存所有的键值对
+ */
 public interface RedisCore
 {
     Set<BytesWrapper> keys();

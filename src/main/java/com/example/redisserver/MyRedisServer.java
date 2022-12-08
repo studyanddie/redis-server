@@ -43,10 +43,6 @@ public class MyRedisServer implements RedisServer
         this.channelOption=channelOption;
         this.redisSingleEventExecutor=new NioEventLoopGroup(1);
     }
-    public static void main(String[] args)
-    {
-        new MyRedisServer(new SingleSelectChannelOption()).start();
-    }
 
     @Override
     public void start()
@@ -69,7 +65,6 @@ public class MyRedisServer implements RedisServer
         }
     }
     public void start0() {
-
 
         serverBootstrap.group(channelOption.boss(), channelOption.selectors())
                 .channel(channelOption.getChannelClass())
@@ -112,4 +107,10 @@ public class MyRedisServer implements RedisServer
     {
         return redisCore;
     }
+
+    public static void main(String[] args)
+    {
+        new MyRedisServer(new SingleSelectChannelOption()).start();
+    }
+
 }
