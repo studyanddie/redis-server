@@ -197,6 +197,7 @@ public class RingBlockingQueue<E> extends AbstractQueue<E> implements BlockingQu
     public boolean offer(Object o) {
         int localWriteIndex=0;
         synchronized (this) {
+
             if(writeIndex>readIndex+maxSize) {
                 return  false;
             }

@@ -10,13 +10,6 @@ java 版本的redis server
 多路复用：支持 epoll，kqueue，select 默认优先级由高到低，同时支持本地和单路复用
 
 强烈推荐使用单路select线程模型
-#### 解决问题
-
-1,启动简单，方便测试
-
-2,解除喜欢刨根问底的开发者，对大厂面试官面试redis相关问题的迷惑侧重点的迷惑
-
-3,为redis proxy 开发提供技术参考
 
 #### 功能介绍
 
@@ -25,8 +18,6 @@ java 版本的redis server
 #### 架构简介
 
 集群架构方式：客户端路由
-
-
 
 
 
@@ -46,9 +37,6 @@ redis-client 或者 redis-desktop-manager 都可以
 
 0.5%的可能延迟超过100ms小于1s
 
-Redis 基本稳定，100%小于12ms，0.5%的可能延迟超过2ms
-
-
 ## 模块介绍
 ### datatype 
 数据类型底层
@@ -56,6 +44,14 @@ Redis 基本稳定，100%小于12ms，0.5%的可能延迟超过2ms
 ### resp
 byte[]数组解码编码方式
 
+### command
+指令解码、编码方式
+
+### channel netty
+tcp连接
+
+### aof
+实现aof持久化
 
 
 

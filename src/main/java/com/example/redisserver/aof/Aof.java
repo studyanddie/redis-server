@@ -68,7 +68,7 @@ public class Aof {
     public Aof(RedisCore redisCore){
         this.redisCore = redisCore;
         File file=new File(this.fileName+suffix);
-        if(!file .isDirectory())
+        if(!file.isDirectory())
         {
             File parentFile = file.getParentFile();
             if (null != parentFile && !parentFile.exists()) {

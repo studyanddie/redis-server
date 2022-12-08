@@ -30,7 +30,7 @@ public class PropertiesUtil {
     public static String getAofPath() {
         String aofDataDir =getProParams().getProperty("aof_data_dir");
         if(StringUtil.isNullOrEmpty(aofDataDir)){
-            return "./aof_data_dir/";
+            return "/aof_data_dir/";
         }
         return  aofDataDir;
     }

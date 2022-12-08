@@ -5,6 +5,7 @@ import com.example.redisserver.aof.Aof;
 import com.example.redisserver.channel.DefaultChannelSelectStrategy;
 import com.example.redisserver.channel.LocalChannelOption;
 import com.example.redisserver.channel.SingleSelectChannelOption;
+import com.example.redisserver.heartbeat.ServerHandler;
 import com.example.redisserver.util.CommandDecoder;
 import com.example.redisserver.util.CommandHandler;
 import com.example.redisserver.util.PropertiesUtil;
@@ -17,10 +18,12 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
+import io.netty.handler.timeout.IdleStateHandler;
 import io.netty.util.concurrent.EventExecutorGroup;
 import org.apache.log4j.Logger;
 
 import java.net.InetSocketAddress;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author WesleyGo
@@ -64,6 +67,18 @@ public class MyRedisServer implements RedisServer
             LOGGER.warn( "Exception!", ignored);
         }
     }
+
+    /**
+     * Redis服务器的启动类，它负责初始化服务器所需的组件，并启动服务器。
+     *
+     * 首先，它使用serverBootstrap组装了一组Netty组件，并设置了一些参数，如线程池大小、心跳间隔时间等。
+     *
+     * 然后，它指定了服务器监听的地址和端口。
+     *
+     * 最后，它定义了一个ChannelInitializer，用来初始化服务器的通道，并添加了一些处理器，如编码器、解码器和命令处理器等。
+     *
+     * 最后，它调用serverBootstrap.bind()方法来启动服务
+     */
     public void start0() {
         //启动类 负责组装netty组件，启动服务器
         serverBootstrap
@@ -71,14 +86,20 @@ public class MyRedisServer implements RedisServer
                 .group(channelOption.boss(), channelOption.selectors())
                 //使用nio实现
                 .channel(channelOption.getChannelClass())
+                //只会记录INFO级别以上的日志，比如警告日志和错误日志
                 .handler(new LoggingHandler(LogLevel.INFO))
+                //接收队列的长度为1024
                 .option(ChannelOption.SO_BACKLOG, 1024)
+                /**
+                 * 这个套接字选项通知内核，如果端口忙，但TCP状态位于 TIME_WAIT ，
+                 * 可以重用端口。如果端口忙，而TCP状态位于其他状态，重用端口时依旧得到一个错误信息，
+                 * 指明"地址已经使用中"。如果你的服务程序停止后想立即重启，而新套接字依旧使用同一端口，
+                 * 此时SO_REUSEADDR 选项非常有用
+                 */
                 .option(ChannelOption.SO_REUSEADDR, true)
-                //false
+                //false,不开启keepalive
                 .option(ChannelOption.SO_KEEPALIVE, PropertiesUtil.getTcpKeepAlive())
-//                .childOption(ChannelOption.TCP_NODELAY, true)
-//                .childOption(ChannelOption.SO_SNDBUF, 65535)
-//                .childOption(ChannelOption.SO_RCVBUF, 65535)
+
                 .localAddress(new InetSocketAddress(PropertiesUtil.getNodeAddress(), PropertiesUtil.getNodePort()))
                 //处理器 决定了读写执行哪些操作
                 .childHandler(
@@ -90,9 +111,10 @@ public class MyRedisServer implements RedisServer
                         ChannelPipeline channelPipeline = socketChannel.pipeline();
                         channelPipeline.addLast(
                                 new ResponseEncoder(),
-                                new CommandDecoder(aof)//,
+                                new CommandDecoder(aof),
 //                                /*心跳,管理长连接*/
-//                                new IdleStateHandler(0, 0, 20)
+                                new IdleStateHandler(3, 5, 7, TimeUnit.MINUTES),
+                                new ServerHandler()
                         );
                         channelPipeline.addLast(redisSingleEventExecutor,new CommandHandler(redisCore)) ;
                     }

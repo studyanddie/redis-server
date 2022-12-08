@@ -27,11 +27,14 @@ public class CommandHandler extends SimpleChannelInboundHandler<Command> // Read
     protected void channelRead0(ChannelHandlerContext ctx, Command command) throws Exception {
         String traceId = TRACEID.currentTraceId();
         LOGGER.debug("traceId:"+ traceId+" 本次处理的命令："+command.type().name());
+        System.out.println("traceId:"+ traceId+" 本次处理的命令："+command.type().name());
         try{
             command.handle(ctx, redisCore);
 
         }catch(Exception e){
             LOGGER.error("处理数据时",e);
+            System.out.println("处理数据时"+e);
+            ctx.close();
         }
 
         LOGGER.debug("traceId:"+traceId+" 命令处理完毕");
