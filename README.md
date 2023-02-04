@@ -48,8 +48,9 @@ redis-client 或者 redis-desktop-manager 都可以
 ## 存储的具体表现
 
 ![image](https://user-images.githubusercontent.com/94610377/216746378-9f963c0d-3400-4bb9-9a75-2d6512daf1c9.png)
-###单线程下与LinkedList的对比
-对比函数在TestSynchronousQueue中
+
+### 单线程下与LinkedList的对比
+  对比函数在TestSynchronousQueue中
 ![image](https://user-images.githubusercontent.com/94610377/216746275-0e3d0d47-0f28-4fb6-a316-5699a95c867a.png)
 
 # 待优化
